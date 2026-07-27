@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import ScrollToTop from './components/scroll-to-top';
 import { SiteHeader } from './components/site-header';
 import { SiteFooter } from './components/site-footer';
 import HomePage from './routes/index';
@@ -14,6 +15,7 @@ import ContactPage from './routes/contact';
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="flex min-h-screen flex-col bg-background">
         <SiteHeader />
         <main className="flex-1">
