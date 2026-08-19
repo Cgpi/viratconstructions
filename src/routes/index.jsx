@@ -31,6 +31,8 @@ import {
   MapPin,
   Clock,
   Clock3,
+  Building,
+  Layers,
   Home,
   Paintbrush,
   Construction,
@@ -40,6 +42,7 @@ import heroImg from "@/assets/hero.jpg";
 import ctaImg from "@/assets/cta.jpg";
 import { properties, testimonials } from "@/lib/data";
 import { PropertyCard } from "@/components/property-card";
+import { submitContactForm } from "@/lib/contact-form";
 
 const stats = [
   { value: "100+", label: "Happy Clients" },
@@ -69,27 +72,51 @@ const reasons = [
     text: "From Trimix roads and layout development to interiors and commercial projects, we provide dependable end-to-end construction services.",
   },
 ];
-
 const services = [
   {
     icon: Factory,
-    title: "Industrial Construction",
-    text: "Specialized construction for re-rolling mills, dal mills, warehouses, and industrial facilities.",
-  },
-  {
-    icon: Warehouse,
-    title: "Warehousing",
-    text: "Durable warehouse structures designed for operational efficiency, safety, and long-term performance.",
+    title: "Industrial Projects",
+    text: "Specialized construction for steel industries, dal mills, manufacturing units, and industrial facilities.",
   },
   {
     icon: Home,
-    title: "Trimix Roads & Layouts",
-    text: "Professional Trimix road construction and layout development for industrial and commercial projects.",
+    title: "Residential Projects",
+    text: "Quality residential construction focused on comfortable spaces, practical layouts, and lasting durability.",
   },
   {
     icon: Building2,
-    title: "Residential & Commercial",
-    text: "Construction and interior solutions for residential homes, commercial buildings, and business spaces.",
+    title: "Commercial Projects",
+    text: "Professional construction solutions for offices, showrooms, shops, and modern commercial spaces.",
+  },
+  {
+    icon: Warehouse,
+    title: "Warehousing Projects",
+    text: "Durable warehouse structures designed for efficient storage, safety, accessibility, and long-term performance.",
+  },
+  {
+    icon: Layers,
+    title: "VDF Flooring",
+    text: "Strong and smooth VDF flooring solutions designed for industrial, commercial, warehouse, and heavy-use areas.",
+  },
+  {
+    icon: Paintbrush,
+    title: "Interior Designing",
+    text: "Creative and functional interior solutions designed to transform residential, commercial, and business spaces.",
+  },
+  {
+    icon: MapPin,
+    title: "Layout Development",
+    text: "Well-planned layouts focused on effective land utilization, accessibility, infrastructure, and future development.",
+  },
+  {
+    icon: Building,
+    title: "Apartments",
+    text: "Modern apartment construction with efficient floor plans, quality materials, comfortable spaces, and lasting value.",
+  },
+  {
+    icon: Home,
+    title: "Row Houses",
+    text: "Thoughtfully planned row houses combining modern design, comfortable living spaces, and efficient land utilization.",
   },
 ];
 
@@ -176,6 +203,31 @@ const blogs = [
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(0);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [submitState, setSubmitState] = useState({ type: "idle", message: "" });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setSubmitState({ type: "idle", message: "" });
+
+    try {
+      await submitContactForm({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: form.subject,
+        message: form.message,
+      });
+      setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+      setSubmitState({ type: "success", message: "Thanks! Your message has been sent successfully." });
+    } catch (error) {
+      setSubmitState({ type: "error", message: error instanceof Error ? error.message : "Unable to send your message right now." });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -322,25 +374,27 @@ export default function HomePage() {
       </Link>
     </div>
 
-    <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {services.map((s) => (
-        <div
-          key={s.title}
-          className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all hover:border-gold hover:shadow-[var(--shadow-card)]"
-        >
-          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gold/10 transition-all group-hover:scale-150" />
+    <div className="mt-12 overflow-x-auto pb-5 scroll-smooth">
+      <div className="flex gap-6 min-w-full px-5 sm:px-0">
+        {services.map((s) => (
+          <div
+            key={s.title}
+            className="min-w-[min(80vw,280px)] sm:min-w-[calc(50%-0.75rem)] lg:min-w-[calc(25%-0.75rem)] group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all hover:border-gold hover:shadow-[var(--shadow-card)]"
+          >
+            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gold/10 transition-all group-hover:scale-150" />
 
-          <s.icon className="relative h-9 w-9 text-gold" />
+            <s.icon className="relative h-9 w-9 text-gold" />
 
-          <h3 className="relative mt-5 font-display text-lg font-semibold text-navy">
-            {s.title}
-          </h3>
+            <h3 className="relative mt-5 font-display text-lg font-semibold text-navy">
+              {s.title}
+            </h3>
 
-          <p className="relative mt-2 text-sm text-muted-foreground leading-relaxed">
-            {s.text}
-          </p>
-        </div>
-      ))}
+            <p className="relative mt-2 text-sm text-muted-foreground leading-relaxed">
+              {s.text}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
@@ -406,7 +460,7 @@ export default function HomePage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="section-pad bg-secondary/50">
+      {/* <section className="section-pad bg-secondary/50">
         <div className="container-px mx-auto max-w-7xl">
           <div className="text-center max-w-2xl mx-auto">
             <span className="eyebrow">Client Stories</span>
@@ -432,7 +486,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* FAQs */}
       <section className="section-pad">
@@ -544,8 +598,12 @@ export default function HomePage() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-navy">Visit Us</p>
-                  <p className="text-sm text-muted-foreground">Plot No 10 
-Subhadra Vyankatesh Nagar, Jalna, Maharashtra </p>
+                  <p className="text-sm text-muted-foreground">
+                    Subhadra,<br />
+                    Plot No 10, Markandey Nagar<br />
+                    Vyankatesh Nagar Jalna<br />
+                    Maharashtra, 431202
+                  </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -560,7 +618,7 @@ Subhadra Vyankatesh Nagar, Jalna, Maharashtra </p>
             </div>
           </div>
 
-          <form className="lg:col-span-3 card-luxury p-7 md:p-10 grid gap-5 sm:grid-cols-2">
+          <form onSubmit={handleSubmit} className="lg:col-span-3 card-luxury p-7 md:p-10 grid gap-5 sm:grid-cols-2">
             <div className="sm:col-span-1">
               <label htmlFor="name" className="text-sm font-medium text-navy">Full Name</label>
               <input
@@ -568,6 +626,8 @@ Subhadra Vyankatesh Nagar, Jalna, Maharashtra </p>
                 name="name"
                 type="text"
                 required
+                value={form.name}
+                onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
                 className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-gold"
                 placeholder="Jane Doe"
               />
@@ -579,6 +639,8 @@ Subhadra Vyankatesh Nagar, Jalna, Maharashtra </p>
                 name="email"
                 type="email"
                 required
+                value={form.email}
+                onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
                 className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-gold"
                 placeholder="jane@example.com"
               />
@@ -589,6 +651,8 @@ Subhadra Vyankatesh Nagar, Jalna, Maharashtra </p>
                 id="phone"
                 name="phone"
                 type="tel"
+                value={form.phone}
+                onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
                 className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-gold"
                 placeholder="+1 (555) 000-0000"
               />
@@ -599,6 +663,8 @@ Subhadra Vyankatesh Nagar, Jalna, Maharashtra </p>
                 id="subject"
                 name="subject"
                 type="text"
+                value={form.subject}
+                onChange={(event) => setForm((current) => ({ ...current, subject: event.target.value }))}
                 className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-gold"
                 placeholder="Property inquiry"
               />
@@ -610,13 +676,20 @@ Subhadra Vyankatesh Nagar, Jalna, Maharashtra </p>
                 name="message"
                 rows={4}
                 required
+                value={form.message}
+                onChange={(event) => setForm((current) => ({ ...current, message: event.target.value }))}
                 className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:border-gold"
                 placeholder="Tell us what you're looking for..."
               />
             </div>
             <div className="sm:col-span-2">
-              <button type="submit" className="btn-gold w-full sm:w-auto">
-                Send Message <ArrowRight className="h-4 w-4" />
+              {submitState.message ? (
+                <p className={`mb-3 text-sm ${submitState.type === "success" ? "text-green-700" : "text-red-600"}`}>
+                  {submitState.message}
+                </p>
+              ) : null}
+              <button type="submit" disabled={loading} className="btn-gold w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-70">
+                {loading ? "Sending..." : <>Send Message <ArrowRight className="h-4 w-4" /></>}
               </button>
             </div>
           </form>

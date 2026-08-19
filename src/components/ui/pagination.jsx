@@ -2,7 +2,6 @@ import * as React from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { button } from "@/components/ui/button";
 
 const Pagination = ({ className, ...props }) => (
   <nav
@@ -28,8 +27,8 @@ const PaginationItem = React.forwardRef(({ ...props }, ref) => (
 ));
 PaginationItem.displayName = "PaginationItem";
 
-const PaginationLink = ({ isActive, size = "icon", className, ...props }) => (
-  <button
+const PaginationLink = ({ className, isActive, size = "icon", ...props }) => (
+  <a
     aria-current={isActive ? "page" : undefined}
     className={cn(
       "inline-flex items-center justify-center rounded-md border border-input h-10 w-10 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",

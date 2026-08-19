@@ -5,11 +5,11 @@ import { useState, useEffect } from "react";
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
-  { to: "/properties", label: "Properties" },
+  // { to: "/properties", label: "Properties" },
   { to: "/services", label: "Services" },
   { to: "/gallery", label: "Gallery" },
-  { to: "/blog", label: "Blog" },
-  { to: "/faq", label: "FAQ" },
+  // { to: "/blog", label: "Blog" },
+  // { to: "/faq", label: "FAQ" },
   { to: "/contact", label: "Contact" },
 ];
 

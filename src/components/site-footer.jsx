@@ -13,19 +13,19 @@ export function SiteFooter() {
               </span>
               <span className="flex flex-col leading-none">
                 <span className="font-display text-xl font-bold">Virat Constructions</span>
-                <span className="text-[10px] tracking-[0.25em] text-white/60 uppercase">Estates</span>
+                <span className="text-[10px] tracking-[0.25em] text-white/60 uppercase">& Associates</span>
               </span>
             </Link>
             <p className="mt-5 text-sm text-white/70 leading-relaxed">
               Curating premium residential and commercial spaces for discerning clients since 2011.
             </p>
-            <div className="mt-6 flex gap-3">
+            {/* <div className="mt-6 flex gap-3">
               {[Globe2, Send, Send, Send].map((Icon, i) => (
                 <a key={i} href="#" className="grid h-9 w-9 place-items-center rounded-full border border-white/20 text-white/80 transition-all hover:bg-gold hover:text-navy hover:border-gold">
                   <Icon className="h-4 w-4" />
                 </a>
               ))}
-            </div>
+            </div> */}
           </div>
 
           <div>
@@ -34,8 +34,8 @@ export function SiteFooter() {
               {[
                 { to: "/", l: "Home" },
                 { to: "/about", l: "About Us" },
-                { to: "/properties", l: "Properties" },
-                { to: "/blog", l: "Blog" },
+                // { to: "/properties", l: "Properties" },
+                // { to: "/blog", l: "Blog" },
                 { to: "/faq", l: "FAQ" },
               ].map((i) => (
                 <li key={i.to}>
@@ -48,11 +48,18 @@ export function SiteFooter() {
           <div>
             <h4 className="font-display text-base font-semibold text-gold">Services</h4>
             <ul className="mt-5 space-y-3 text-sm text-white/70">
-              <li>Property Buying</li>
-              <li>Property Selling</li>
-              <li>Rental Assistance</li>
-              <li>Investment Consultation</li>
-              <li>Legal Guidance</li>
+              {[
+                "Industrial Projects",
+                "Residential Projects",
+                "Commercial Projects",
+                "Interior Design",
+                "Warehousing Projects",
+                "Row Houses",
+              ].map((service) => (
+                <li key={service}>
+                  <Link to="/services" className="hover:text-gold transition-colors">{service}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -61,7 +68,7 @@ export function SiteFooter() {
             <ul className="mt-5 space-y-4 text-sm text-white/70">
               <li className="flex gap-3">
                 <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-gold" />
-                <span>Plot No 10 Subhadra  <br />Vyankatesh Nagar Jalna</span>
+                <span>Subhadra,<br/> Plot No 10, Markandey Nagar <br />Vyankatesh Nagar Jalna <br />Maharashtra, 431202</span>
               </li>
               <li className="flex gap-3">
                 <Phone className="h-4 w-4 shrink-0 mt-0.5 text-gold" />
@@ -77,10 +84,10 @@ export function SiteFooter() {
 
         <div className="mt-14 border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between gap-4 text-xs text-white/50">
           <p>© 2026 Virat Constructions. All rights reserved.</p>
-          <div className="flex gap-6">
+          {/* <div className="flex gap-6">
             <a href="#" className="hover:text-gold">Privacy Policy</a>
             <a href="#" className="hover:text-gold">Terms of Service</a>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

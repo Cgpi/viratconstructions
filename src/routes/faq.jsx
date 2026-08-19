@@ -3,12 +3,54 @@ import { Plus, Minus } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 
 const faqs = [
-  { q: "How do I schedule a property visit?", a: "Use the Book Site Visit button anywhere on the site, or call our advisory team directly. We typically confirm appointments within two business hours." },
-  { q: "Do you provide legal assistance?", a: "Yes. Every transaction includes review by our in-house counsel, covering contracts, title verification, easements, and disclosures at no additional charge." },
-  { q: "Are home loans available?", a: "We work with a panel of preferred lenders offering competitive rates for our clients. We can introduce you and shepherd the pre-approval process end-to-end." },
-  { q: "How can I contact an agent?", a: "Reach us by phone, email, or the contact form. A senior advisor will respond personally — never an auto-reply or junior associate." },
-  { q: "What is your fee structure?", a: "Fees are agreed transparently up front. We share our standard schedule on the first call and tailor it where the scope warrants." },
-  { q: "Do you handle international buyers?", a: "Absolutely. We routinely advise overseas buyers and can coordinate viewings, financing, and closing remotely with full discretion." },
+  {
+    q: "What types of construction projects do you undertake?",
+    a: "We undertake a wide range of construction projects including industrial projects, residential buildings, commercial spaces, warehouses, apartments, and row houses. We also provide VDF flooring, interior designing, and layout development services."
+  },
+  {
+    q: "Do you undertake industrial construction projects?",
+    a: "Yes. We provide construction solutions for various industrial requirements, including steel industries, re-rolling mills, dal mills, manufacturing facilities, industrial structures, and other customized industrial projects."
+  },
+  {
+    q: "Do you provide complete residential construction services?",
+    a: "Yes. We undertake residential construction projects from planning and development to execution. Our services include individual homes, apartments, row houses, and other residential developments based on the client's requirements."
+  },
+  {
+    q: "Do you undertake commercial construction projects?",
+    a: "Yes. We provide construction solutions for commercial buildings, offices, shops, showrooms, business spaces, and other commercial developments, with a focus on functionality, durability, and efficient space utilization."
+  },
+  {
+    q: "Do you provide warehouse construction services?",
+    a: "Yes. We construct warehouses and storage facilities designed around the client's operational requirements. Our warehouse solutions focus on structural strength, efficient space utilization, accessibility, and long-term durability."
+  },
+  {
+    q: "What is VDF flooring and where is it used?",
+    a: "VDF, or Vacuum Dewatered Flooring, is a durable concrete flooring solution suitable for areas that experience heavy usage and movement. It is commonly used in industrial facilities, warehouses, factories, workshops, commercial spaces, and other heavy-duty applications."
+  },
+  {
+    q: "Do you provide interior designing services?",
+    a: "Yes. We provide interior designing solutions for residential and commercial spaces. Our services focus on creating functional, comfortable, and visually appealing interiors while considering the client's requirements, preferences, and available space."
+  },
+  {
+    q: "Do you provide layout development services?",
+    a: "Yes. We undertake layout development with a focus on effective land utilization, accessibility, internal planning, and overall functionality. Layouts can be developed for residential, commercial, and other development projects."
+  },
+  {
+    q: "Do you construct apartments and row houses?",
+    a: "Yes. We undertake apartment and row house construction projects with an emphasis on practical planning, quality construction, efficient space utilization, and modern living requirements."
+  },
+  {
+    q: "Can you customize a project according to our requirements?",
+    a: "Absolutely. Every project has different requirements, so we work closely with our clients to understand their needs, site conditions, design preferences, budget, and intended use before planning the appropriate construction solution."
+  },
+  {
+    q: "How can I discuss my construction project with your team?",
+    a: "You can contact us through the phone number, email address, or contact form provided on our website. Share your project requirements with us, and our team can discuss the scope, requirements, and next steps with you."
+  },
+  {
+    q: "Do you handle both new construction and development projects?",
+    a: "Yes. We work on new construction and development projects across industrial, residential, commercial, and warehousing segments, along with specialized services such as VDF flooring, interiors, and layout development."
+  },
 ];
 
 export default function FAQPage() {
