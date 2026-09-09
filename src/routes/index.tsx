@@ -679,12 +679,8 @@ export default function HomePage() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-navy">Visit Us</p>
-                  <p className="text-sm text-muted-foreground">
-                    Subhadra,<br />
-                    Plot No 10, Markandey Nagar<br />
-                    Vyankatesh Nagar Jalna<br />
-                    Maharashtra, 431202
-                  </p>
+                  <p className="text-sm text-muted-foreground">Plot No 10 
+Subhadra Vyankatesh Nagar, Jalna, Maharashtra </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
