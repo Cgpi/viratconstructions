@@ -8,7 +8,7 @@ export function SiteFooter() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link to="/" className="flex items-center gap-2.5">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-gold text-navy">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-primary text-white">
                 <Home className="h-5 w-5" />
               </span>
               <span className="flex flex-col leading-none">
@@ -29,7 +29,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="font-display text-base font-semibold text-gold">Quick Links</h4>
+            <h4 className="font-display text-base font-semibold text-white">Quick Links</h4>
             <ul className="mt-5 space-y-3 text-sm">
               {[
                 { to: "/", l: "Home" },
@@ -46,7 +46,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="font-display text-base font-semibold text-gold">Services</h4>
+            <h4 className="font-display text-base font-semibold text-white">Services</h4>
             <ul className="mt-5 space-y-3 text-sm text-white/70">
               {[
                 "Industrial Projects",
@@ -64,7 +64,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="font-display text-base font-semibold text-gold">Get in Touch</h4>
+            <h4 className="font-display text-base font-semibold text-white">Get in Touch</h4>
             <ul className="mt-5 space-y-4 text-sm text-white/70">
               <li className="flex gap-3">
                 <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-gold" />

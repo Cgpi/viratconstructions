@@ -1,385 +1,146 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  Factory,
-  Home,
-  Building2,
-  Warehouse,
-  Layers,
-  Paintbrush,
-  Map,
-  Building,
-  Rows3,
-  ArrowRight,
-  X,
-  CheckCircle2,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
 import { PageHero } from "@/components/page-hero";
+import { servicesData } from "@/lib/services-data";
+import { useServicesWithApiImages } from "@/hooks/use-service-images";
+import {
+  FadeIn,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-elements";
+import { SMOOTH_EASE } from "@/components/animations/constants";
 
 export default function ServicesPage() {
-  const [activeService, setActiveService] = useState(null);
-
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    document.body.style.overflow = activeService ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [activeService]);
-
-  // Close modal on Escape key
-  useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === "Escape") setActiveService(null);
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, []);
-
-  const services = [
-    {
-      icon: Factory,
-      title: "Industrial Projects",
-      summary:
-        "Construction and development projects for industrial facilities designed around specific operational requirements of businesses.",
-      intro: [
-        "We undertake construction and development projects for industrial facilities designed around the specific operational requirements of businesses.",
-        "From manufacturing units to processing facilities, we focus on creating strong, functional, and efficient structures capable of supporting demanding industrial operations.",
-      ],
-      listTitle: "Our industrial construction solutions include:",
-      points: [
-        "Manufacturing and production facilities",
-        "Steel industry projects",
-        "Dal mills and food-processing units",
-        "Industrial sheds and structures",
-        "Factory buildings",
-        "Utility and service areas",
-        "Customized industrial spaces",
-      ],
-      outro:
-        "We combine practical planning, structural strength, and efficient space utilization to create industrial facilities built for long-term use.",
-    },
-    {
-      icon: Home,
-      title: "Residential Projects",
-      summary:
-        "Residential spaces that combine structural quality, functionality, comfort, and modern design tailored to client requirements.",
-      intro: [
-        "We build residential spaces that combine structural quality, functionality, comfort, and modern design. Every residential project is planned according to the lifestyle, requirements, and budget of the client.",
-        "From individual homes to larger residential developments, we focus on creating spaces that are comfortable, practical, and built to last.",
-      ],
-      listTitle: "Our residential construction services include:",
-      points: [
-        "Individual residential buildings",
-        "Custom-designed homes",
-        "Bungalows",
-        "Multi-storey residential structures",
-        "Residential developments",
-        "Renovation and improvement works",
-      ],
-      outro:
-        "Our approach ensures that every stage of construction is carefully coordinated to achieve a quality finished home.",
-    },
-    {
-      icon: Building2,
-      title: "Commercial Projects",
-      summary:
-        "Commercial construction projects with a strong focus on functionality, accessibility, aesthetics, and efficient utilization of space.",
-      intro: [
-        "We undertake commercial construction projects with a strong focus on functionality, accessibility, aesthetics, and efficient utilization of space.",
-        "Whether it is a standalone commercial building or a business facility, we develop spaces that support the client's operational and commercial requirements.",
-      ],
-      listTitle: "Our commercial projects include:",
-      points: [
-        "Commercial buildings",
-        "Offices",
-        "Shops and retail spaces",
-        "Showrooms",
-        "Business establishments",
-        "Mixed-use developments",
-        "Commercial interiors",
-      ],
-      outro:
-        "We aim to create professional and practical commercial environments that make a strong impression while supporting day-to-day business operations.",
-    },
-    {
-      icon: Warehouse,
-      title: "Warehousing Projects",
-      summary:
-        "Construction solutions for warehouses and storage facilities designed for efficient handling, storage, and movement of goods.",
-      intro: [
-        "We provide construction solutions for warehouses and storage facilities designed for efficient handling, storage, and movement of goods.",
-        "Our warehouse projects are planned with attention to available space, accessibility, circulation, storage requirements, and operational efficiency.",
-      ],
-      listTitle: "Our warehousing solutions include:",
-      points: [
-        "Storage warehouses",
-        "Industrial warehouses",
-        "Distribution facilities",
-        "Logistics spaces",
-        "Custom warehouse structures",
-        "Loading and unloading areas",
-      ],
-      outro:
-        "From structural planning to execution, we focus on delivering durable and functional warehouse spaces suited to the client's operational needs.",
-    },
-    {
-      icon: Layers,
-      title: "VDF Flooring",
-      summary:
-        "Vacuum Dewatered Flooring solutions for areas that require a strong, durable, and smooth concrete floor surface.",
-      intro: [
-        "We provide VDF (Vacuum Dewatered Flooring) solutions for areas that require a strong, durable, and smooth concrete floor surface.",
-        "VDF flooring is particularly suitable for industrial and commercial environments where floors are subjected to heavy movement, equipment, storage, and regular usage.",
-      ],
-      listTitle: "Suitable applications include:",
-      points: [
-        "Industrial units",
-        "Warehouses",
-        "Manufacturing facilities",
-        "Workshops",
-        "Commercial spaces",
-        "Parking and utility areas",
-      ],
-      outro:
-        "Our flooring work focuses on proper execution, surface finishing, durability, and the specific functional requirements of the project.",
-    },
-    {
-      icon: Paintbrush,
-      title: "Interior Designing",
-      summary:
-        "Interior spaces that balance aesthetics, functionality, comfort, and the identity of the space.",
-      intro: [
-        "We create interior spaces that balance aesthetics, functionality, comfort, and the identity of the space.",
-        "Our interior design approach begins with understanding how the space will be used and then developing layouts, finishes, materials, and design elements accordingly.",
-      ],
-      listTitle: "Our interior solutions include:",
-      points: [
-        "Residential interiors",
-        "Commercial interiors",
-        "Office spaces",
-        "Retail and showroom interiors",
-        "Space planning",
-        "Material and finish selection",
-        "Customized interior concepts",
-      ],
-      outro:
-        "From concept to execution, we aim to transform spaces into environments that are visually appealing, comfortable, and practical.",
-    },
-    {
-      icon: Map,
-      title: "Layout Development",
-      summary:
-        "Layout development solutions focused on effective land utilization, accessibility, functionality, and future development requirements.",
-      intro: [
-        "A well-planned layout is the foundation of an efficient and successful development project. We provide layout development solutions focused on effective land utilization, accessibility, functionality, and future development requirements.",
-        "We work on planning spaces according to the nature of the development while maintaining a practical approach to circulation and overall site utilization.",
-      ],
-      listTitle: "Our layout development services include:",
-      points: [
-        "Residential layouts",
-        "Plot planning",
-        "Site development planning",
-        "Internal road planning",
-        "Space utilization planning",
-        "Infrastructure coordination",
-        "Development-oriented layouts",
-      ],
-      outro:
-        "Our objective is to create organized and practical layouts that maximize the potential of the available site.",
-    },
-    {
-      icon: Building,
-      title: "Apartments",
-      summary:
-        "Apartment construction and development projects with a focus on efficient planning, structural quality, and modern living requirements.",
-      intro: [
-        "We undertake apartment construction and development projects with a focus on efficient planning, structural quality, functionality, and modern living requirements.",
-        "From individual apartment buildings to larger residential developments, we pay attention to the overall planning of living spaces, common areas, circulation, and essential amenities.",
-      ],
-      listTitle: "Our apartment projects focus on:",
-      points: [
-        "Efficient floor plans",
-        "Comfortable living spaces",
-        "Quality construction",
-        "Functional common areas",
-        "Modern design",
-        "Effective space utilization",
-        "Long-term durability",
-      ],
-      outro:
-        "We work to create apartment developments that offer a balance of comfort, functionality, and contemporary living.",
-    },
-    {
-      icon: Rows3,
-      title: "Row Houses",
-      summary:
-        "Row house projects that combine the advantages of independent living with efficient land utilization.",
-      intro: [
-        "We develop row house projects that combine the advantages of independent living with efficient land utilization.",
-        "Our row house planning focuses on creating comfortable homes with well-organized internal spaces, practical layouts, attractive elevations, and appropriate outdoor areas.",
-      ],
-      listTitle: "Our row house solutions include:",
-      points: [
-        "Residential planning and development",
-        "Individual row house units",
-        "Optimized floor plans",
-        "Modern elevations",
-        "Internal roads and common areas",
-        "Efficient land utilization",
-        "Customized residential designs",
-      ],
-      outro:
-        "Every project is approached with attention to functionality, aesthetics, construction quality, and the overall living experience.",
-    },
-  ];
+  const services = useServicesWithApiImages(servicesData);
 
   return (
     <>
       <PageHero
         eyebrow="Our Services"
         title="Construction solutions built around your vision."
-        description="From industrial infrastructure and warehouses to roads, layouts, interiors, and complete residential and commercial projects."
+        description="From industrial infrastructure and warehouses to Trimix roads, layouts, interiors, and complete residential and commercial developments."
       />
 
       <section className="section-pad">
         <div className="container-px mx-auto max-w-7xl">
-          <div className="grid gap-7 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer
+            staggerDelay={0.08}
+            delayChildren={0.1}
+            className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          >
             {services.map((s) => {
               const Icon = s.icon;
 
               return (
-                <div
-                  key={s.title}
-                  className="group card-luxury p-8 relative overflow-hidden flex flex-col"
-                >
-                  <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/10 transition-all group-hover:scale-150" />
-
-                  <div className="relative grid h-14 w-14 place-items-center rounded-2xl bg-navy text-gold">
-                    <Icon className="h-6 w-6" />
-                  </div>
-
-                  <h3 className="relative mt-6 font-display text-xl font-semibold text-navy">
-                    {s.title}
-                  </h3>
-
-                  <p className="relative mt-3 text-sm text-muted-foreground leading-relaxed flex-1">
-                    {s.summary}
-                  </p>
-
-                  <div className="relative mt-6 flex items-center justify-between gap-3">
-                    <button
-                      onClick={() => setActiveService(s)}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:text-gold transition-colors"
+                <StaggerItem key={s.id}>
+                  <motion.div
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.35, ease: SMOOTH_EASE }}
+                    className="group card-luxury relative overflow-hidden flex flex-col h-full bg-card border border-border"
+                  >
+                    {/* Related Free Image Showcase with smooth hover zoom */}
+                    <Link
+                      to={`/services/${s.id}`}
+                      className="block relative aspect-[16/10] overflow-hidden bg-muted"
                     >
-                      Read More
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
+                      <motion.img
+                        src={s.image}
+                        alt={s.title}
+                        loading="lazy"
+                        whileHover={{ scale: 1.08 }}
+                        transition={{ duration: 0.7, ease: SMOOTH_EASE }}
+                        className="h-full w-full object-cover will-change-transform"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                      
+                      {/* Category tag */}
+                      <span className="absolute left-4 top-4 rounded-full bg-navy/90 backdrop-blur-md px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-gold shadow-sm">
+                        {s.shortTag}
+                      </span>
+
+                      {/* Icon overlay badge */}
+                      <span className="absolute right-4 bottom-4 grid h-11 w-11 place-items-center rounded-xl bg-white/95 text-primary shadow-md backdrop-blur-sm transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white">
+                        <Icon className="h-5 w-5" />
+                      </span>
+                    </Link>
+
+                    {/* Card Body */}
+                    <div className="p-7 flex-1 flex flex-col justify-between">
+                      <div>
+                        <Link to={`/services/${s.id}`} className="block">
+                          <h3 className="font-display text-xl font-bold text-navy transition-colors duration-200 group-hover:text-primary">
+                            {s.title}
+                          </h3>
+                        </Link>
+
+                        <p className="mt-3 text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                          {s.summary}
+                        </p>
+
+                        {/* Quick preview highlights */}
+                        <div className="mt-5 space-y-2 border-t border-border/60 pt-4">
+                          {s.points.slice(0, 3).map((pt) => (
+                            <div key={pt} className="flex items-center gap-2 text-xs text-foreground/80">
+                              <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
+                              <span className="truncate">{pt}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Read More button navigating to dedicated page */}
+                      <div className="mt-6 pt-4 border-t border-border/60 flex items-center justify-between">
+                        <Link
+                          to={`/services/${s.id}`}
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-primary group-hover:text-primary-dark transition-colors"
+                        >
+                          Read More
+                          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                        </Link>
+                        <span className="text-xs text-muted-foreground">
+                          Detailed View →
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
+      {/* Planning Next Project Section */}
       <section className="section-pad bg-navy text-navy-foreground">
         <div className="container-px mx-auto max-w-4xl text-center">
-          <h2 className="font-display text-3xl md:text-5xl font-bold">
-            Planning your next project?
-          </h2>
+          <FadeIn direction="up" delay={0.1}>
+            <span className="eyebrow text-gold">Consultation</span>
+            <h2 className="mt-2 font-display text-3xl md:text-5xl font-bold">
+              Planning your next construction project?
+            </h2>
+          </FadeIn>
 
-          <p className="mt-5 text-white/70">
-            Talk to our team about your construction, infrastructure,
-            development, or interior requirements and explore the right
-            approach for your project.
-          </p>
+          <FadeIn direction="up" delay={0.2}>
+            <p className="mt-5 text-white/70 leading-relaxed max-w-2xl mx-auto">
+              Talk to our engineering team about your construction, infrastructure,
+              industrial, or interior requirements and receive expert guidance on specifications, costing, and execution.
+            </p>
+          </FadeIn>
 
-          <Link to="/contact" className="btn-gold mt-8 inline-flex">
-            Start a Conversation
-          </Link>
-        </div>
-      </section>
-
-      {/* Modal */}
-      {activeService && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          onClick={() => setActiveService(null)}
-        >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-navy/60 backdrop-blur-sm animate-in fade-in" />
-
-          {/* Modal panel */}
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl bg-card shadow-2xl animate-in fade-in zoom-in-95"
-          >
-            {/* Header */}
-            <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-border bg-card px-6 py-5 sm:px-8">
-              <div className="flex items-center gap-4">
-                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-navy text-gold">
-                  <activeService.icon className="h-6 w-6" />
-                </div>
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-navy">
-                  {activeService.title}
-                </h3>
-              </div>
-
-              <button
-                onClick={() => setActiveService(null)}
-                aria-label="Close"
-                className="shrink-0 rounded-full p-2 text-muted-foreground hover:bg-secondary hover:text-navy transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Body */}
-            <div className="px-6 py-6 sm:px-8 sm:py-7">
-              {activeService.intro.map((para, idx) => (
-                <p
-                  key={idx}
-                  className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4"
-                >
-                  {para}
-                </p>
-              ))}
-
-              <h4 className="mt-6 font-display text-base sm:text-lg font-semibold text-navy">
-                {activeService.listTitle}
-              </h4>
-
-              <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                {activeService.points.map((point) => (
-                  <li
-                    key={point}
-                    className="flex items-start gap-2.5 text-sm text-muted-foreground"
-                  >
-                    <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0 text-gold" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {activeService.outro && (
-                <p className="mt-6 text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  {activeService.outro}
-                </p>
-              )}
-
-              <Link
-                to="/contact"
-                onClick={() => setActiveService(null)}
-                className="btn-gold mt-8 inline-flex items-center gap-1.5"
-              >
-                Enquire About This Service
+          <FadeIn direction="up" delay={0.3}>
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Link to="/contact" className="btn-primary">
+                Start a Conversation
                 <ArrowRight className="h-4 w-4" />
               </Link>
+              <a href="tel:7020999781" className="btn-outline-light">
+                Call +91 7020999781
+              </a>
             </div>
-          </div>
+          </FadeIn>
         </div>
-      )}
+      </section>
     </>
   );
 }

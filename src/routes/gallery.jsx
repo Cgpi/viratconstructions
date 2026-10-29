@@ -10,6 +10,12 @@ import {
 } from "../components/ui/pagination";
 import { useEffect, useMemo, useState } from "react";
 import { Dialog, DialogContent } from "../components/ui/dialog";
+import { motion } from "framer-motion";
+import {
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-elements";
+import { SMOOTH_EASE } from "@/components/animations/constants";
 
 const GALLERY_API_URL =
   "https://www.cgpisoftware.com/vpconstruction/api/images?user_id=7&location=gallery";
@@ -133,56 +139,77 @@ export default function GalleryPage() {
               No gallery images are available right now. Please check back later.
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <StaggerContainer
+              key={page}
+              staggerDelay={0.06}
+              delayChildren={0.05}
+              className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            >
               {currentImages.map((image) => (
-                <figure
-                  key={image.id}
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setSelected(image);
-                    }
-                  }}
-                  onClick={() => setSelected(image)}
-                  className="flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl bg-slate-100 shadow-[var(--shadow-card)]"
-                >
-                  <div className="relative overflow-hidden bg-slate-100 aspect-[4/3]">
-                    <img
-                      src={image.image_url}
-                      alt={image.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-105"
-                      width={1200}
-                      height={900}
-                    />
-                  </div>
-                  <figcaption className="mt-auto border-t border-border/70 px-4 py-3 text-sm font-medium text-slate-700 h-14">
-                    {image.title}
-                  </figcaption>
-                </figure>
+                <StaggerItem key={image.id}>
+                  <motion.figure
+                    tabIndex={0}
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.35, ease: SMOOTH_EASE }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelected(image);
+                      }
+                    }}
+                    onClick={() => setSelected(image)}
+                    className="flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl bg-secondary shadow-[var(--shadow-card)] transition-shadow duration-300 hover:shadow-xl group"
+                  >
+                    <div className="relative overflow-hidden bg-secondary aspect-[4/3]">
+                      <motion.img
+                        src={image.image_url}
+                        alt={image.title}
+                        loading="lazy"
+                        decoding="async"
+                        whileHover={{ scale: 1.08 }}
+                        transition={{ duration: 0.7, ease: SMOOTH_EASE }}
+                        className="h-full w-full object-cover will-change-transform"
+                        width={1200}
+                        height={900}
+                      />
+                    </div>
+                    <figcaption className="mt-auto border-t border-border/70 px-4 py-3 text-sm font-medium text-foreground h-14 flex items-center transition-colors duration-200 group-hover:text-primary">
+                      {image.title}
+                    </figcaption>
+                  </motion.figure>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           )}
 
-          <Dialog open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
-            <DialogContent className="p-0 bg-transparent max-w-5xl w-full">
+          <Dialog
+            open={selected !== null}
+            onOpenChange={(open) => !open && setSelected(null)}
+          >
+            <DialogContent className="p-0 bg-transparent max-w-5xl w-full border-none shadow-none">
               {selected && (
-                <div className="mx-auto w-full">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3, ease: SMOOTH_EASE }}
+                  className="mx-auto w-full bg-navy/95 backdrop-blur-md rounded-2xl p-4 overflow-hidden"
+                >
                   <img
                     src={selected.image_url}
                     alt={selected.title}
-                    className="mx-auto block max-h-[80vh] w-auto object-contain"
+                    className="mx-auto block max-h-[80vh] w-auto rounded-xl object-contain shadow-2xl"
                   />
-                  <div className="px-4 py-3 text-center text-sm text-slate-200">{selected.title}</div>
-                </div>
+                  <div className="px-4 py-3 text-center text-sm font-medium text-white/90">
+                    {selected.title}
+                  </div>
+                </motion.div>
               )}
             </DialogContent>
           </Dialog>
 
           {!loading && !error && totalPages > 1 && (
-            <Pagination className="mt-10">
+            <Pagination className="mt-12">
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
@@ -219,7 +246,7 @@ export default function GalleryPage() {
                 <PaginationItem>
                   <PaginationNext
                     href="#"
-                        onClick={(event) => {
+                    onClick={(event) => {
                       event.preventDefault();
                       setPage((current) => Math.min(totalPages, current + 1));
                     }}

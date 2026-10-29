@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { PageHero } from "@/components/page-hero";
+import {
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-elements";
+import { SMOOTH_EASE } from "@/components/animations/constants";
 
 const faqs = [
   {
@@ -66,30 +72,60 @@ export default function FAQPage() {
 
       <section className="section-pad">
         <div className="container-px mx-auto max-w-3xl">
-          <div className="space-y-4">
+          <StaggerContainer
+            staggerDelay={0.06}
+            delayChildren={0.1}
+            className="space-y-4"
+          >
             {faqs.map((f, i) => {
               const isOpen = open === i;
               return (
-                <div key={i} className={`rounded-2xl border bg-card transition-all ${isOpen ? "border-gold shadow-[var(--shadow-card)]" : "border-border"}`}>
-                  <button
-                    onClick={() => setOpen(isOpen ? null : i)}
-                    className="w-full flex items-center justify-between gap-4 p-6 text-left"
-                    aria-expanded={isOpen}
+                <StaggerItem key={i}>
+                  <div
+                    className={`rounded-2xl border bg-card transition-all duration-300 overflow-hidden ${
+                      isOpen
+                        ? "border-primary shadow-[var(--shadow-card)]"
+                        : "border-border hover:border-border/80"
+                    }`}
                   >
-                    <span className="font-display text-lg font-semibold text-navy">{f.q}</span>
-                    <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition-all ${isOpen ? "bg-gold text-navy" : "bg-secondary text-navy"}`}>
-                      {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-                    </span>
-                  </button>
-                  {isOpen && (
-                    <div className="px-6 pb-6 text-muted-foreground leading-relaxed animate-fade-in">
-                      {f.a}
-                    </div>
-                  )}
-                </div>
+                    <button
+                      onClick={() => setOpen(isOpen ? null : i)}
+                      className="w-full flex items-center justify-between gap-4 p-6 text-left cursor-pointer"
+                      aria-expanded={isOpen}
+                    >
+                      <span className="font-display text-lg font-semibold text-navy transition-colors duration-200 hover:text-primary">
+                        {f.q}
+                      </span>
+                      <span
+                        className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition-all duration-300 ${
+                          isOpen
+                            ? "bg-primary text-white rotate-180"
+                            : "bg-secondary text-navy"
+                        }`}
+                      >
+                        {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                      </span>
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.35, ease: SMOOTH_EASE }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-6 pb-6 text-muted-foreground leading-relaxed border-t border-border/40 pt-3">
+                            {f.a}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
     </>

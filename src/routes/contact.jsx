@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Phone,
   Mail,
@@ -9,14 +10,22 @@ import {
   Camera,
   Sparkles,
 } from "lucide-react";
-
+import { motion } from "framer-motion";
 import { PageHero } from "@/components/page-hero";
 import {
   submitContactForm,
   validateContactForm,
 } from "@/lib/contact-form";
+import {
+  FadeIn,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations/motion-elements";
 
 export default function ContactPage() {
+  const [searchParams] = useSearchParams();
+  const prefillService = searchParams.get("service") || "";
+
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,9 +36,19 @@ export default function ContactPage() {
     name: "",
     email: "",
     phone: "",
-    interest: "",
-    message: "",
+    interest: prefillService,
+    message: prefillService ? `Inquiring about ${prefillService} construction services.` : "",
   });
+
+  useEffect(() => {
+    if (prefillService) {
+      setForm((prev) => ({
+        ...prev,
+        interest: prefillService,
+        message: prev.message || `Inquiring about ${prefillService} construction services.`,
+      }));
+    }
+  }, [prefillService]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -69,13 +88,10 @@ export default function ContactPage() {
         message: "",
       });
     } catch (err) {
-      setSent(false);
-
       setError(
-        err instanceof Error
-          ? err.message
-          : "Unable to send message right now."
+        err instanceof Error ? err.message : "Unable to submit your inquiry right now."
       );
+      setSent(false);
     } finally {
       setLoading(false);
     }
@@ -83,24 +99,39 @@ export default function ContactPage() {
 
   return (
     <>
+      <PageHero
+        eyebrow="Contact Us"
+        title="Let's build something enduring."
+        subtitle="Reach out to discuss your next industrial, commercial, or residential construction project."
+      />
+
       <section className="section-pad">
         <div className="container-px mx-auto max-w-7xl">
           <div className="grid gap-12 lg:grid-cols-5">
-
             {/* ================= LEFT SIDE ================= */}
             <div className="lg:col-span-2">
-              <span className="eyebrow">Reach Us</span>
+              <FadeIn direction="up" delay={0.05}>
+                <span className="eyebrow">Reach Us</span>
+              </FadeIn>
 
-              <h2 className="mt-3 font-display text-3xl font-bold text-navy">
-                Speak to a senior advisor.
-              </h2>
+              <FadeIn direction="up" delay={0.15}>
+                <h2 className="mt-3 font-display text-3xl font-bold text-navy">
+                  Speak to a senior advisor.
+                </h2>
+              </FadeIn>
 
-              <p className="mt-4 text-muted-foreground">
-                No bots. No auto-replies. A real human responds — usually
-                within two hours.
-              </p>
+              <FadeIn direction="up" delay={0.25}>
+                <p className="mt-4 text-muted-foreground">
+                  No bots. No auto-replies. A real human responds — usually
+                  within two hours.
+                </p>
+              </FadeIn>
 
-              <div className="mt-10 space-y-5">
+              <StaggerContainer
+                staggerDelay={0.1}
+                delayChildren={0.2}
+                className="mt-10 space-y-5"
+              >
                 {[
                   {
                     icon: Phone,
@@ -117,33 +148,37 @@ export default function ContactPage() {
                   {
                     icon: MapPin,
                     label: "Office",
-                    value: "Subhadra,\nPlot No 10, Markandey Nagar\nVyankatesh Nagar Jalna\nMaharashtra, 431202",
+                    value:
+                      "Subhadra,\nPlot No 10, Markandey Nagar\nVyankatesh Nagar Jalna\nMaharashtra, 431202",
                   },
                 ].map((c) => (
-                  <a
-                    key={c.label}
-                    href={c.href ?? "#"}
-                    className="flex gap-4 rounded-2xl border border-border p-5 transition-all hover:border-gold hover:shadow-[var(--shadow-card)]"
-                  >
-                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-navy text-gold">
-                      <c.icon className="h-5 w-5" />
-                    </span>
+                  <StaggerItem key={c.label}>
+                    <motion.a
+                      whileHover={{ y: -3 }}
+                      transition={{ duration: 0.2 }}
+                      href={c.href ?? "#"}
+                      className="flex gap-4 rounded-2xl border border-border p-5 transition-all duration-300 hover:border-primary hover:shadow-[var(--shadow-card)] group"
+                    >
+                      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-accent text-brand-dark transition-transform duration-300 group-hover:scale-110">
+                        <c.icon className="h-5 w-5" />
+                      </span>
 
-                    <div>
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
-                        {c.label}
-                      </p>
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
+                          {c.label}
+                        </p>
 
-                      <p className="mt-1 font-semibold text-navy whitespace-pre-line">
-                        {c.value}
-                      </p>
-                    </div>
-                  </a>
+                        <p className="mt-1 font-semibold text-navy whitespace-pre-line">
+                          {c.value}
+                        </p>
+                      </div>
+                    </motion.a>
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerContainer>
 
               {/* FOLLOW */}
-              <div className="mt-10">
+              <FadeIn direction="up" delay={0.4} className="mt-10">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">
                   Follow
                 </p>
@@ -151,21 +186,23 @@ export default function ContactPage() {
                 <div className="mt-4 flex gap-3">
                   {[Globe2, MessageCircle, Camera, Sparkles].map(
                     (Icon, i) => (
-                      <a
+                      <motion.a
                         key={i}
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        transition={{ duration: 0.2 }}
                         href="#"
-                        className="grid h-11 w-11 place-items-center rounded-full border border-border text-navy transition-all hover:bg-navy hover:text-gold hover:border-navy"
+                        className="grid h-11 w-11 place-items-center rounded-full border border-border text-primary transition-colors hover:bg-primary hover:text-white hover:border-primary"
                       >
                         <Icon className="h-4 w-4" />
-                      </a>
+                      </motion.a>
                     )
                   )}
                 </div>
-              </div>
+              </FadeIn>
             </div>
 
             {/* ================= RIGHT SIDE FORM ================= */}
-            <div className="lg:col-span-3">
+            <FadeIn direction="left" delay={0.2} className="lg:col-span-3">
               <form
                 onSubmit={handleSubmit}
                 className="rounded-3xl border border-border bg-card p-8 md:p-10 shadow-[var(--shadow-card)]"
@@ -180,7 +217,6 @@ export default function ContactPage() {
 
                 {/* FORM FIELDS */}
                 <div className="mt-8 grid gap-5 sm:grid-cols-2">
-
                   {/* NAME */}
                   <Field
                     label="Full Name"
@@ -239,7 +275,7 @@ export default function ContactPage() {
                   <Field
                     label="Interest"
                     name="interest"
-                    placeholder="Buying / Selling / Renting"
+                    placeholder="Industrial / Residential / Interior"
                     value={form.interest}
                     onChange={(value) =>
                       setForm((current) => ({
@@ -278,7 +314,7 @@ export default function ContactPage() {
                     className={`w-full rounded-xl border bg-white px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 ${
                       formErrors.message
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/30"
-                        : "border-border focus:border-gold focus:ring-gold/30"
+                        : "border-border focus:border-primary focus:ring-primary/30"
                     }`}
                   />
 
@@ -307,7 +343,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn-gold mt-7 w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-70"
+                  className="btn-primary mt-7 w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {loading ? (
                     "Sending..."
@@ -321,7 +357,7 @@ export default function ContactPage() {
                   )}
                 </button>
               </form>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -368,7 +404,7 @@ function Field({
         className={`w-full rounded-xl border bg-white px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 ${
           error
             ? "border-red-500 focus:border-red-500 focus:ring-red-500/30"
-            : "border-border focus:border-gold focus:ring-gold/30"
+            : "border-border focus:border-primary focus:ring-primary/30"
         }`}
       />
 
